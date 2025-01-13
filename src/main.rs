@@ -112,7 +112,7 @@ fn setup_panic_hooks() {
     let default_hook = panic::take_hook();
 
     if let Err(_) = env::var("RUST_BACKTRACE") {
-        panic::set_hook(Box::new(move |info: &panic::PanicInfo| {
+        panic::set_hook(Box::new(move |info: &panic::PanicHookInfo| {
             // First call the default hook that prints to standard error.
             default_hook(info);
 

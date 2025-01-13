@@ -494,26 +494,7 @@ impl CrateData {
 
     /// Check that the crate the given path is properly configured.
     pub fn check_crate_config(&self) -> Result<()> {
-        self.check_crate_type()?;
         Ok(())
-    }
-
-    fn check_crate_type(&self) -> Result<()> {
-        let pkg = &self.data.packages[self.current_idx];
-        let any_cdylib = pkg
-            .targets
-            .iter()
-            .filter(|target| target.kind.iter().any(|k| k == "cdylib"))
-            .any(|target| target.crate_types.iter().any(|s| s == "cdylib"));
-        if any_cdylib {
-            return Ok(());
-        }
-        bail!(
-            "crate-type must be cdylib to compile to wasm32-unknown-unknown. Add the following to your \
-             Cargo.toml file:\n\n\
-             [lib]\n\
-             crate-type = [\"cdylib\", \"rlib\"]"
-        )
     }
 
     fn pkg(&self) -> &cargo_metadata::Package {
